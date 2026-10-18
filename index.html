@@ -1,0 +1,858 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070914">
+  <meta name="description" content="AG INKAM — Tasks, points, daily bonuses and community.">
+  <title>AG INKAM — Earn & Explore</title>
+
+  <style>
+    :root {
+      --bg: #070914;
+      --panel: #101426;
+      --panel2: #151b30;
+      --blue: #36c5ff;
+      --purple: #9b6dff;
+      --text: #f5f7ff;
+      --muted: #9ba5c2;
+      --border: rgba(150, 170, 255, .14);
+      --green: #55edb0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 10% 0%, #17234a 0%, transparent 38%),
+        radial-gradient(ellipse at 100% 35%, #251344 0%, transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      padding-bottom: 95px;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: auto;
+      padding: 20px 16px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: #070914;
+      font-size: 20px;
+      font-weight: 1000;
+      box-shadow: 0 0 28px #36c5ff35;
+    }
+
+    .brand h1 {
+      font-size: 19px;
+      letter-spacing: 1px;
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .status {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 30px;
+      font-size: 11px;
+      color: var(--green);
+      background: #55edb00c;
+      white-space: nowrap;
+    }
+
+    .hero {
+      padding: 24px;
+      border: 1px solid #6b80ff35;
+      border-radius: 25px;
+      background:
+        linear-gradient(125deg, #18264a 0%, #16132e 65%, #20113b 100%);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border: 30px solid #36c5ff12;
+      border-radius: 50%;
+      right: -75px;
+      top: -70px;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero h2 {
+      font-size: clamp(27px, 6vw, 38px);
+      margin: 12px 0 8px;
+      letter-spacing: -.8px;
+    }
+
+    .hero p {
+      color: #b7c3e6;
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 450px;
+    }
+
+    .balance-card {
+      position: relative;
+      z-index: 1;
+      margin-top: 25px;
+      padding: 17px;
+      background: #07091480;
+      border: 1px solid #ffffff15;
+      border-radius: 17px;
+    }
+
+    .balance-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .balance-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .balance {
+      font-size: 32px;
+      font-weight: 850;
+      letter-spacing: -1px;
+    }
+
+    .demo-tag {
+      font-size: 10px;
+      color: #ffda85;
+      border: 1px solid #ffda8535;
+      background: #ffda850c;
+      border-radius: 20px;
+      padding: 7px 9px;
+    }
+
+    .section {
+      margin: 28px 0;
+      scroll-margin-top: 20px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .section-head h3 {
+      font-size: 17px;
+    }
+
+    .section-head span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .quick {
+      min-width: 0;
+      padding: 15px 7px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: linear-gradient(145deg, #151a30, #0d1121);
+      color: var(--text);
+      text-align: center;
+      transition: .2s;
+    }
+
+    .quick:hover, .task:hover {
+      border-color: #36c5ff80;
+      transform: translateY(-2px);
+    }
+
+    .quick .emoji {
+      font-size: 25px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .quick strong {
+      font-size: 11px;
+      display: block;
+      line-height: 1.5;
+    }
+
+    .quick small {
+      color: var(--muted);
+      font-size: 9px;
+      display: block;
+      margin-top: 5px;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 11px;
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 15px;
+      background: linear-gradient(120deg, #12182b, #0e1120);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      transition: .2s;
+    }
+
+    .task-icon {
+      width: 45px;
+      height: 45px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: #36c5ff12;
+      font-size: 23px;
+    }
+
+    .task-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-info h4 {
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .task-info p {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .reward {
+      color: var(--green);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 11px;
+      padding: 10px 13px;
+      color: #06101c;
+      font-size: 11px;
+      font-weight: 800;
+      background: linear-gradient(100deg, var(--blue), #8a8bff);
+      white-space: nowrap;
+    }
+
+    .btn-outline {
+      background: #ffffff08;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .feature-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 19px;
+      background: linear-gradient(140deg, #171b32, #101323);
+      margin-bottom: 12px;
+    }
+
+    .feature-card h4 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .profile-row {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 15px;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 17px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      background: linear-gradient(135deg, #36c5ff30, #9b6dff40);
+      border: 1px solid var(--border);
+    }
+
+    .profile-row p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .support-links {
+      display: grid;
+      gap: 10px;
+    }
+
+    .support-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid var(--border);
+      background: #ffffff05;
+      border-radius: 13px;
+      padding: 14px;
+      font-size: 12px;
+    }
+
+    .support-link span {
+      color: var(--blue);
+      overflow-wrap: anywhere;
+      text-align: right;
+    }
+
+    .notice {
+      padding: 13px;
+      border: 1px solid #ffda8528;
+      background: #ffda8508;
+      color: #d5c8a8;
+      border-radius: 13px;
+      font-size: 11px;
+      line-height: 1.7;
+      margin-top: 18px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      z-index: 10;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #090b17ed;
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      padding: 10px 6px calc(10px + env(safe-area-inset-bottom));
+    }
+
+    .nav-inner {
+      display: flex;
+      width: 100%;
+      max-width: 560px;
+      justify-content: space-around;
+      gap: 4px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      border: 0;
+      background: transparent;
+      color: #818ba9;
+      font-size: 10px;
+      padding: 5px 2px;
+    }
+
+    .nav-btn span {
+      font-size: 20px;
+    }
+
+    .nav-btn.active {
+      color: var(--blue);
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 30;
+      left: 50%;
+      bottom: 90px;
+      transform: translate(-50%, 15px);
+      opacity: 0;
+      pointer-events: none;
+      width: max-content;
+      max-width: calc(100% - 30px);
+      padding: 13px 17px;
+      border: 1px solid #36c5ff45;
+      border-radius: 13px;
+      background: #171d32;
+      color: white;
+      font-size: 12px;
+      text-align: center;
+      transition: .25s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    footer {
+      text-align: center;
+      color: #77819f;
+      font-size: 10px;
+      line-height: 1.8;
+      padding: 22px 5px;
+    }
+
+    @media (max-width: 430px) {
+      .container {
+        padding: 16px 12px;
+      }
+
+      .hero {
+        padding: 19px;
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .quick {
+        padding: 15px 8px;
+      }
+
+      .task {
+        gap: 9px;
+        padding: 12px 10px;
+      }
+
+      .task-icon {
+        width: 39px;
+        height: 39px;
+      }
+
+      .btn {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">AG</div>
+        <div>
+          <h1>AG INKAM</h1>
+          <p>YOUR TASK & COMMUNITY HUB</p>
+        </div>
+      </div>
+      <div class="status">● ONLINE</div>
+    </header>
+
+    <section class="hero" id="home">
+      <div class="eyebrow">WELCOME TO AG</div>
+      <h2>Explore. Complete.<br>Grow Together.</h2>
+      <p>
+        Discover tasks, explore daily features and manage your
+        activity in one simple hub.
+      </p>
+
+      <div class="balance-card">
+        <div class="balance-label">Your Demo Points</div>
+        <div class="balance-row">
+          <div class="balance" id="balance">0 <span style="font-size:15px">PTS</span></div>
+          <div class="demo-tag">DEMO ONLY</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="dashboard">
+      <div class="section-head">
+        <h3>Quick Access</h3>
+        <span>Explore AG INKAM</span>
+      </div>
+
+      <div class="quick-grid">
+        <button class="quick" data-target="tasks">
+          <span class="emoji">🎯</span>
+          <strong>Tasks</strong>
+          <small>Explore activities</small>
+        </button>
+
+        <button class="quick" data-action="daily">
+          <span class="emoji">🎁</span>
+          <strong>Daily Bonus</strong>
+          <small>View bonus info</small>
+        </button>
+
+        <button class="quick" data-action="refer">
+          <span class="emoji">👥</span>
+          <strong>Refer & Earn</strong>
+          <small>Invite friends</small>
+        </button>
+
+        <button class="quick" data-target="profile">
+          <span class="emoji">👤</span>
+          <strong>My Profile</strong>
+          <small>Account details</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="section" id="tasks">
+      <div class="section-head">
+        <h3>Available Tasks</h3>
+        <span>Sample tasks</span>
+      </div>
+
+      <div class="task-list">
+        <article class="task">
+          <div class="task-icon">📺</div>
+          <div class="task-info">
+            <h4>Explore AG Community</h4>
+            <p>Visit the official Telegram community.</p>
+            <div class="reward">+5 demo points</div>
+          </div>
+          <button class="btn" data-action="community">OPEN</button>
+        </article>
+
+        <article class="task">
+          <div class="task-icon">▶️</div>
+          <div class="task-info">
+            <h4>Explore AG YouTube</h4>
+            <p>Visit the creator's YouTube channel.</p>
+            <div class="reward">+5 demo points</div>
+          </div>
+          <button class="btn" data-action="youtube">OPEN</button>
+        </article>
+
+        <article class="task">
+          <div class="task-icon">🌟</div>
+          <div class="task-info">
+            <h4>Discover AG INKAM</h4>
+            <p>Explore the Mini App features.</p>
+            <div class="reward">+5 demo points</div>
+          </div>
+          <button class="btn btn-outline" data-action="explore">VIEW</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="bonus">
+      <div class="section-head">
+        <h3>Daily Bonus</h3>
+        <span>Bonus information</span>
+      </div>
+
+      <div class="feature-card">
+        <h4>🎁 Your Daily Check-in</h4>
+        <p>
+          Check back regularly for daily bonus announcements.
+          A real bonus system requires server-side verification.
+        </p>
+        <button class="btn" data-action="daily">CHECK BONUS</button>
+      </div>
+    </section>
+
+    <section class="section" id="refer">
+      <div class="section-head">
+        <h3>Refer & Earn</h3>
+        <span>Invite your friends</span>
+      </div>
+
+      <div class="feature-card">
+        <h4>👥 Grow the AG Community</h4>
+        <p>
+          Share AG INKAM with friends. Referral tracking and
+          rewards will require a connected backend.
+        </p>
+        <button class="btn" data-action="refer">SHARE APP</button>
+      </div>
+    </section>
+
+    <section class="section" id="profile">
+      <div class="section-head">
+        <h3>My Profile</h3>
+        <span>Telegram account</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="profile-row">
+          <div class="avatar">👤</div>
+          <div>
+            <h4 id="profileName">AG INKAM User</h4>
+            <p id="profileUsername">@username unavailable</p>
+          </div>
+        </div>
+        <p>
+          Your Telegram profile information will appear here
+          when the app is opened inside Telegram.
+        </p>
+        <button class="btn btn-outline" data-action="profile">
+          VIEW ACCOUNT INFO
+        </button>
+      </div>
+    </section>
+
+    <section class="section" id="support">
+      <div class="section-head">
+        <h3>Help & Support</h3>
+        <span>Contact AG</span>
+      </div>
+
+      <div class="support-links">
+        <a class="support-link"
+           href="https://t.me/ag_x_amane"
+           target="_blank" rel="noopener noreferrer">
+          <strong>✈️ Telegram Support</strong>
+          <span>@ag_x_amane ↗</span>
+        </a>
+
+        <a class="support-link"
+           href="mailto:mails.official99@gmail.com">
+          <strong>✉️ Email Support</strong>
+          <span>Send email ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="notice">
+      <strong>⚠️ Demo Notice:</strong>
+      This frontend is a starter interface. Displayed points are
+      illustrative only and have no cash value. Task verification,
+      persistent accounts, referrals, bonuses and withdrawals are
+      not enabled. Never pay money to unlock demo rewards.
+    </div>
+
+    <footer>
+      <strong>AG INKAM</strong><br>
+      Built for the AG community<br>
+      © <span id="year"></span> AG INKAM. All rights reserved.
+    </footer>
+
+  </main>
+
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <button class="nav-btn active" data-target="home">
+        <span>⌂</span>Home
+      </button>
+      <button class="nav-btn" data-target="tasks">
+        <span>◈</span>Tasks
+      </button>
+      <button class="nav-btn" data-target="bonus">
+        <span>🎁</span>Bonus
+      </button>
+      <button class="nav-btn" data-target="refer">
+        <span>♧</span>Refer
+      </button>
+      <button class="nav-btn" data-target="profile">
+        <span>◉</span>Profile
+      </button>
+    </div>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const $ = (selector) => document.querySelector(selector);
+      const toast = $("#toast");
+      let toastTimer;
+
+      function notify(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2800);
+      }
+
+      $("#year").textContent = new Date().getFullYear();
+
+      // Telegram Mini App integration.
+      const tg = window.Telegram && window.Telegram.WebApp
+        ? window.Telegram.WebApp
+        : null;
+
+      if (tg) {
+        tg.ready();
+        tg.expand();
+
+        const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
+
+        if (user) {
+          const fullName = [user.first_name, user.last_name]
+            .filter(Boolean).join(" ");
+
+          $("#profileName").textContent = fullName || "AG INKAM User";
+          $("#profileUsername").textContent =
+            user.username ? "@" + user.username : "Telegram user";
+        }
+      }
+
+      // Scroll to a section.
+      function goToSection(id) {
+        const section = document.getElementById(id);
+
+        if (section) {
+          section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }
+      }
+
+      document.querySelectorAll("[data-target]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const target = button.dataset.target;
+          goToSection(target);
+
+          if (button.classList.contains("nav-btn")) {
+            document.querySelectorAll(".nav-btn").forEach((item) => {
+              item.classList.toggle("active", item === button);
+            });
+          }
+        });
+      });
+
+      // These buttons provide interface feedback only.
+      // No fake rewards or real-money balances are issued.
+      document.querySelectorAll("[data-action]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const action = button.dataset.action;
+
+          switch (action) {
+            case "community":
+              window.open(
+                "https://t.me/agxamane",
+                "_blank",
+                "noopener,noreferrer"
+              );
+              break;
+
+            case "youtube":
+              notify("YouTube channel link can be configured by the admin.");
+              break;
+
+            case "daily":
+              notify("Daily bonus is not active yet.");
+              break;
+
+            case "refer":
+              if (navigator.share) {
+                navigator.share({
+                  title: "AG INKAM",
+                  text: "Explore AG INKAM!",
+                  url: window.location.href
+                }).catch(() => {});
+              } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(window.location.href)
+                  .then(() => notify("App link copied."))
+                  .catch(() => notify("Referral system is not active yet."));
+              } else {
+                notify("Referral system is not active yet.");
+              }
+              break;
+
+            case "profile":
+              notify(
+                tg && tg.initData
+                  ? "Telegram profile detected. Secure account features need a backend."
+                  : "Open this app through Telegram to detect your profile."
+              );
+              break;
+
+            case "explore":
+              notify("This is a starter preview. Task verification is not enabled.");
+              break;
+          }
+        });
+      });
+
+      // Telegram Back Button support.
+      if (tg && tg.BackButton) {
+        tg.BackButton.onClick(() => {
+          goToSection("home");
+          tg.BackButton.hide();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
