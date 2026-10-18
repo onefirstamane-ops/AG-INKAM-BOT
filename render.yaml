@@ -1,0 +1,10 @@
+
+services:
+  - type: web
+    name: ag-inkam-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn backend:app
+    healthCheckPath: /api/health
+    autoDeploy: true
